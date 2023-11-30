@@ -57,11 +57,19 @@ def SystemSolve(matrix):
     return solutions
 
 # Test cases
-print(SystemSolve([[0, 4, 2, -2], [-2, 3, 1, -7], [4, 5, 2, 4]]))  # Consistent solution: [2, -2, 3]
-print(SystemSolve([[1, 3, 5], [2, 6, 5]]))  # Inconsistent solution: []
+# print(SystemSolve([[0, 4, 2, -2], [-2, 3, 1, -7], [4, 5, 2, 4]]))  # Consistent solution: [2, -2, 3]
+# print(SystemSolve([[1, 3, 5], [2, 6, 5]]))  # Inconsistent solution: []
+# # Output: [2.0, 1.0]
+# print(SystemSolve([[3, 1, -1, 1], [1, -1, 1, -3], [2, 1, 1, 0]]))
+# # output: [-0.5000000000000002, 1.7500000000000004, -0.7500000000000001]
+# # ex
+# print(SystemSolve([[-1, -2, 1, -1], [2, 3, 0, 2], [0, 1, -2, 0]]))
+# # output: [1.0, 0.0]
+print(SystemSolve([[0, 4, 2, -2], [-2, 3, 1, -7], [4, 5, 2, 4]]))
+# Output: [2.0, -2.0, 3.0]
+
+print(SystemSolve([[1, 3, 5], [2, 6, 5]]))
+# Output: []
+
+print(SystemSolve([[1, 3, 5], [3, -2, 4], [4, -1, 9], [7, -3, 13]]))
 # Output: [2.0, 1.0]
-print(SystemSolve([[3, 1, -1, 1], [1, -1, 1, -3], [2, 1, 1, 0]]))
-# output: [-0.5000000000000002, 1.7500000000000004, -0.7500000000000001]
-# ex
-print(SystemSolve([[-1, -2, 1, -1], [2, 3, 0, 2], [0, 1, -2, 0]]))
-# output: [1.0, 0.0]
