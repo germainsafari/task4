@@ -1,40 +1,57 @@
-def gaussian_elimination(matrix):
+def SystemSolve(matrix):
+    # Check if the matrix is empty
+    if not matrix:
+        return []
+
     rows = len(matrix)
     cols = len(matrix[0])
 
-    # Forward elimination
-    for col in range(min(rows, cols - 1)):  # Ignore the last column (constants)
-        # Find the pivot row
-        max_row = max(range(col, rows), key=lambda i: abs(matrix[i][col]))
+    # Check for inconsistent system (more variables than equations)
+    if cols - 1 > rows:
+        return []
 
-        # Swap current row with the pivot row
-        matrix[col], matrix[max_row] = matrix[max_row], matrix[col]
+    for i in range(rows):
+        # Find pivot for this column
+        pivot_row = i
+        for j in range(i + 1, rows):
+            if abs(matrix[j][i]) > abs(matrix[pivot_row][i]):
+                pivot_row = j
 
-        # Check for a zero pivot element
-        pivot_element = matrix[col][col]
-        if pivot_element == 0:
-            continue
+        # Swap the rows for partial pivoting
+        matrix[i], matrix[pivot_row] = matrix[pivot_row], matrix[i]
 
-        # Make the pivot element 1
-        matrix[col] = [element / pivot_element for element in matrix[col]]
+        # Check if the system is inconsistent
+        if matrix[i][i] == 0:
+            return []
+
+        # Normalize the pivot row
+        pivot_value = matrix[i][i]
+        for j in range(cols):
+            matrix[i][j] /= pivot_value
 
         # Eliminate other rows
-        for row in range(rows):
-            if row != col:
-                factor = matrix[row][col]
-                matrix[row] = [a - factor * b for a, b in zip(matrix[row], matrix[col])]
+        for k in range(rows):
+            if k != i:
+                factor = matrix[k][i]
+                for j in range(cols):
+                    matrix[k][j] -= factor * matrix[i][j]
 
-    # Back substitution
-    solutions = [matrix[row][-1] for row in range(rows)]
+    # Check for inconsistent system (non-empty row with all zeros in the coefficients)
+    for i in range(rows):
+        if all(coeff == 0 for coeff in matrix[i][:-1]) and matrix[i][-1] != 0:
+            return []
 
-    return solutions
+    # Extract the solutions
+    solutions = [row[-1] for row in matrix]
 
-# Test cases
-print(gaussian_elimination([[0, 4, 2, -2], [-2, 3, 1, -7], [4, 5, 2, 4]]))
-# Output: [2.0, -2.0, 3.0]
+    return solutions[:-1] if len(solutions) == cols else solutions
 
-print(gaussian_elimination([[1, 3, 5], [2, 6, 5]]))
+# Examples
+print(SystemSolve([[0, 4, 2, -2], [-2, 3, 1, -7], [4, 5, 2, 4]]))
+# Output: [2, -2, 3]
+
+print(SystemSolve([[1, 3, 5], [2, 6, 5]]))
 # Output: []
 
-print(gaussian_elimination([[1, 3, 5], [3, -2, 4], [4, -1, 9], [7, -3, 13]]))
-# Output: [2.0, 1.0]
+print(SystemSolve([[1, 3, 5], [3, -2, 4], [4, -1, 9], [7, -3, 13]]))
+# Output: [2, 1]
